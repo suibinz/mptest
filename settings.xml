@@ -1,3 +1,10 @@
-<logging>
-	<test_log_dir>/tmp/</test_log_dir>
-</logging>
+<mpSettings>
+	<logging>
+		<test_log_dir>/tmp/</test_log_dir>
+	</logging>
+
+	<selenium>
+		<chromedriver>mputil/selenium/chromedriver</chromedriver>
+		<geckodriver>mputil/selelium/geckodriver</geckodriver>
+	</selenium>
+</mpSettings>

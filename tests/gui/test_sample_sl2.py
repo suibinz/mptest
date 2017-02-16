@@ -3,30 +3,33 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import pytest
 import time
+import os
 from mputil.mplogger import MPLogger
+import xmltodict
 
 
 logger = MPLogger(__name__)
+settingFile = "settings.xml"
 
 @pytest.fixture(scope="module", params = ["FIREFOX", "CHROME"])
 def setup(request):
-    '''
-    import sys
-    geckodriverPath = "/Users/suibin/Projects/venv/mptest/mputil/selenium"
-    sys.path.append(geckodriverPath)
-    logger.info("setting system path with geckodriver: " + str(sys.path))
-    '''
+    #setting up browser webdriver locations
+    loc = os.environ["MPHOME"] + settingFile
+    with open(loc, "r") as f:
+        setting = xmltodict.parse(f.read())
+        chromedriver = os.environ["MPHOME"] + setting["mpSettings"]["selenium"]["chromedriver"]
+        geckodriver  = os.environ["MPHOME"] + setting["mpSettings"]["selenium"]["geckodriver"]
 
     #setting up webdriver fixture
     if request.param == "FIREFOX":
         caps = DesiredCapabilities.FIREFOX
         caps["marionette"] = True
-        caps["binary"] = "/usr/bin/firefox"
+        caps["binary"] = geckodriver
         driver = webdriver.Firefox(capabilities=caps)
     elif request.param == "CHROME":
-        caps = DesiredCapabilities.CHROME
-        caps["binary"] = "/usr/bin/chrome"
-        driver = webdriver.Chrome("/Users/suibin/Projects/venv/mptest/mputil/selenium/chromedriver")
+        #caps = DesiredCapabilities.CHROME
+        #caps["binary"] = "/usr/bin/chrome"
+        driver = webdriver.Chrome(chromedriver)
 
     logger.info("Starting " + request.param + " WebDriver.")
     yield driver

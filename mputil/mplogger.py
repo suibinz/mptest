@@ -8,10 +8,10 @@ settingFile = "settings.xml"
 class MPLogger(logging.Logger):
 	def __init__(self, name):
 		#setting the logging directory, filename format is fixed
-		loc = os.environ["MPHOME"] + "/" + settingFile
+		loc = os.environ["MPHOME"] + settingFile
 		with open(loc, "r") as f:
 			setting = xmltodict.parse(f.read())
-		logdir = setting["logging"]["test_log_dir"]
+		logdir = setting["mpSettings"]["logging"]["test_log_dir"]
 
 		logging.Logger.__init__(self, logging.INFO)
 		timeStr = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
