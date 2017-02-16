@@ -13,13 +13,19 @@ class MPLogger(logging.Logger):
 			setting = xmltodict.parse(f.read())
 		logdir = setting["mpSettings"]["logging"]["test_log_dir"]
 
+		logFormatter = '\n%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 		logging.Logger.__init__(self, logging.INFO)
 		timeStr = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
-		handler = logging.FileHandler(logdir + name + "-" + timeStr + ".log")
-		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-		handler.setFormatter(formatter)
 
+		handler = logging.FileHandler(logdir + name + "-" + timeStr + ".log")
+		formatter = logging.Formatter(logFormatter)
+		handler.setFormatter(formatter)
 		self.addHandler(handler)
+
+		consoleHandler = logging.StreamHandler()
+		consoleFormatter = logging.Formatter(logFormatter)
+		consoleHandler.setFormatter(consoleFormatter)
+		self.addHandler(consoleHandler)
 	
 '''
 logger = MPLogger()

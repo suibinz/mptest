@@ -34,8 +34,8 @@ def setup(request):
     logger.info("Starting " + request.param + " WebDriver.")
     yield driver
     #tearing down webdriver fixture
-    print("\nTearing down setup")
-    logger.info("Tear down driver handle.")
+    print("\nTearing down {} webdriver setup".format(request.param) )
+    logger.info("Tearing down {} driver handle.".format(request.param) )
     driver.quit()
 
 def test_pycon(setup):
