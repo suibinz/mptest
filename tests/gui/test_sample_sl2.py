@@ -8,8 +8,8 @@ from mputil.mplogger import MPLogger
 
 logger = MPLogger(__name__)
 
-@pytest.fixture(scope="module")
-def setup():
+@pytest.fixture(scope="module", params = ["FIREFOX", "CHROME"])
+def setup(request):
     '''
     import sys
     geckodriverPath = "/Users/suibin/Projects/venv/mptest/mputil/selenium"
@@ -18,12 +18,17 @@ def setup():
     '''
 
     #setting up webdriver fixture
-    print("Starting up Webdriver.\n")
-    caps = DesiredCapabilities.FIREFOX
-    caps["marionette"] = True
-    caps["binary"] = "/usr/bin/firefox"
-    logger.info("Starting Firefox geckodriver.")
-    driver = webdriver.Firefox(capabilities=caps)
+    if request.param == "FIREFOX":
+        caps = DesiredCapabilities.FIREFOX
+        caps["marionette"] = True
+        caps["binary"] = "/usr/bin/firefox"
+        driver = webdriver.Firefox(capabilities=caps)
+    elif request.param == "CHROME":
+        caps = DesiredCapabilities.CHROME
+        caps["binary"] = "/usr/bin/chrome"
+        driver = webdriver.Chrome("/Users/suibin/Projects/venv/mptest/mputil/selenium/chromedriver")
+
+    logger.info("Starting " + request.param + " WebDriver.")
     yield driver
     #tearing down webdriver fixture
     print("\nTearing down setup")
