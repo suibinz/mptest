@@ -5,23 +5,17 @@ import pytest
 import time
 from mputil.mplogger import MPLogger
 
-'''
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-handler = logging.FileHandler("/tmp/"+ __name__ + ".log")
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-'''
+
 logger = MPLogger(__name__)
 
 @pytest.fixture(scope="module")
 def setup():
+    '''
     import sys
-    geckodriverPath = "Users/suibin/Projects/mptest/selenium"
-    geckodriverPath = "/Users/suibin/Projects/mptest/mputil/selenium"
+    geckodriverPath = "/Users/suibin/Projects/venv/mptest/mputil/selenium"
     sys.path.append(geckodriverPath)
-    logger.info(sys.path)
+    logger.info("setting system path with geckodriver: " + str(sys.path))
+    '''
 
     #setting up webdriver fixture
     print("Starting up Webdriver.\n")
